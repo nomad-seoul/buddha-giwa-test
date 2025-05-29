@@ -1,14 +1,3 @@
-// script.js
-// ✅ 접근 제한용 쿼리 검사
-//(function checkAccessToken() {
- // const urlParams = new URLSearchParams(window.location.search);
- // const access = urlParams.get('access');
- //if (access !== 'temple2024') {
- //  document.body.innerHTML = "<div style='color:white; font-family:sans-serif; text-align:center; margin-top:50vh;'>🙏 허용되지 않은 접근입니다</div>";
-  //  throw new Error("접근 거부됨: 올바른 토큰 없음");
- // }
-//})();
-
 
 let previousQuote = "";
 let recentQuotes = []; // 🔥 추가: 최근 본 문구 기억
