@@ -1,6 +1,6 @@
-
-let previousQuote = "";
-let recentQuotes = []; // 🔥 추가: 최근 본 문구 기억
+// ✅ 최근 명언 모드별 따로 저장
+let recentQuotesClassic = [];
+let recentQuotesLite = [];
 let quotes = {
   classicQuotes: [],
   liteQuotes: []
@@ -17,26 +17,24 @@ fetch('data/quotes.json')
     console.error("❌ JSON 불러오기 실패:", error);
   });
 
-  // 문구랜덤뽑기
-  function getUniqueQuote(list) {
-    let quote = "";
-    let attempts = 0;
-  
-    do {
-      const i = Math.floor(Math.random() * list.length);
-      quote = list[i];
-      attempts++;
-    } while (recentQuotes.includes(quote) && attempts < 10);
-  
-    recentQuotes.push(quote);
-    if (recentQuotes.length > 5) {
-      recentQuotes.shift();
-    }
-  
-    return quote;
+// ✅ 문구 랜덤 뽑기 함수
+function getUniqueQuote(list, recentList) {
+  let quote = "";
+  let attempts = 0;
+
+  do {
+    const i = Math.floor(Math.random() * list.length);
+    quote = list[i];
+    attempts++;
+  } while (recentList.includes(quote) && attempts < 10);
+
+  recentList.push(quote);
+  if (recentList.length > 5) {
+    recentList.shift();
+  }
+
+  return quote;
 }
-
-
 
 // ✅ 타이핑 효과
 function typeWriterEffect(element, text, i = 0, buttonId = null) {
@@ -53,7 +51,6 @@ function typeWriterEffect(element, text, i = 0, buttonId = null) {
     }
   }
 }
-
 
 // ✅ 진심 위로 모드 전환
 function enterClassicMode() {
@@ -83,18 +80,17 @@ function enterClassicMode() {
 
     const quoteArea = document.getElementById("quote-area-classic");
     quoteArea.innerText = "";
-    const quote = getUniqueQuote(quotes.classicQuotes);
+    const quote = getUniqueQuote(quotes.classicQuotes, recentQuotesClassic);
     typeWriterEffect(quoteArea, quote);
   }, 1000);
 }
 
 function showAnotherClassicQuote() {
   const quoteArea = document.getElementById("quote-area-classic");
-  const quote = getUniqueQuote(quotes.classicQuotes);
+  const quote = getUniqueQuote(quotes.classicQuotes, recentQuotesClassic);
   quoteArea.innerText = "";
   typeWriterEffect(quoteArea, quote, 0, "classic-more-btn");
 }
-
 
 function enterLiteMode() {
   const mainScreen = document.getElementById("main-screen");
@@ -123,18 +119,17 @@ function enterLiteMode() {
 
     const quoteArea = document.getElementById("quote-area-lite");
     quoteArea.textContent = "";
-    const quote = getUniqueQuote(quotes.liteQuotes);
+    const quote = getUniqueQuote(quotes.liteQuotes, recentQuotesLite);
     typeWriterEffect(quoteArea, quote);
   }, 1000);
 }
 
 function showAnotherLiteQuote() {
   const quoteArea = document.getElementById("quote-area-lite");
-  const quote = getUniqueQuote(quotes.liteQuotes);
+  const quote = getUniqueQuote(quotes.liteQuotes, recentQuotesLite);
   quoteArea.textContent = "";
   typeWriterEffect(quoteArea, quote, 0, "lite-more-btn");
 }
-
 
 // ✅ 돌아가기 버튼 기능 (공통)
 function backToMain() {
@@ -177,27 +172,27 @@ function playSound() {
     audioPlaying = false;
   }
 }
+
 // 고양이 순간이동
 const ninjaCat = document.getElementById('ninja-cat');
 ninjaCat.addEventListener('click', () => {
-  enterLiteMode(); // 이 함수가 웃음 위로로 가는 거 맞지?
+  enterLiteMode();
 });
+
 function teleportNinjaCat() {
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
 
-  const randomX = Math.random() * (screenWidth - 100); // 여백 고려
+  const randomX = Math.random() * (screenWidth - 100);
   const randomY = Math.random() * (screenHeight - 100);
 
   ninjaCat.style.left = `${randomX}px`;
   ninjaCat.style.top = `${randomY}px`;
   ninjaCat.style.opacity = 1;
 
-  // 사라지는 시간 수정  숫자 수정하면됨.
   setTimeout(() => {
     ninjaCat.style.opacity = 0;
   }, 3000);
 }
 
-// 순간이동시간 설정 숫자 수정하면됨
 setInterval(teleportNinjaCat, 5000);
