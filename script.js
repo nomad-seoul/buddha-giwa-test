@@ -1,3 +1,21 @@
+
+document.addEventListener("DOMContentLoaded", () => {
+  const rawRef = document.referrer || "";
+  const ref = rawRef.toLowerCase();
+  const ua = navigator.userAgent;
+
+  console.log("Referrer:", ref);
+  console.log("UserAgent:", ua);
+
+  const isDirect = ref === "";
+  const badReferrers = ["kakao", "naver", "instagram", "facebook", "t.co", "twitter"];
+  const isSuspiciousSource = isDirect || badReferrers.some(b => ref.includes(b));
+  const isNotMobile = !/Mobi|Android/i.test(ua);
+
+  if (isSuspiciousSource || isNotMobile) {
+    window.location.href = "no-access.html";
+  }
+});
 // ✅ 최근 명언 모드별 따로 저장
 let recentQuotesClassic = [];
 let recentQuotesLite = [];
@@ -196,3 +214,4 @@ function teleportNinjaCat() {
 }
 
 setInterval(teleportNinjaCat, 5000);
+
