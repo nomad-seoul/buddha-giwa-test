@@ -9,9 +9,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const isSuspiciousSource = isDirect || badReferrers.some(b => ref.includes(b));
   const isNotMobile = !/Mobi|Android/i.test(ua);
 
-  if (isSuspiciousSource || isNotMobile) {
-    window.location.href = "no-access.html";
-  }
+  //if (isSuspiciousSource || isNotMobile) {
+   // window.location.href = "no-access.html";
+ // }
 
   let timeout;
   function resetTimer() {
@@ -88,7 +88,7 @@ function typeWriterEffect(element, text, i = 0, buttonId = null) {
   }
   if (i < text.length) {
     element.textContent += text.charAt(i);
-    setTimeout(() => typeWriterEffect(element, text, i + 1, buttonId), 70);
+    setTimeout(() => typeWriterEffect(element, text, i + 1, buttonId), 60);
   } else {
     if (buttonId) {
       document.getElementById(buttonId).disabled = false;
