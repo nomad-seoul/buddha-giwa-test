@@ -1,3 +1,4 @@
+// ✅ 초기 접속 필터링 및 30분 타이머 (접근 제한 기능)
 document.addEventListener("DOMContentLoaded", () => {
   const rawRef = document.referrer || "";
   const ref = rawRef.toLowerCase();
@@ -17,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
     clearTimeout(timeout);
     timeout = setTimeout(() => {
       window.location.href = "no-access.html";
-    }, 30 * 60 * 1000);
+    }, 30 * 60 * 1000); // 30분 무반응시 접근 제한
   }
   window.onload = resetTimer;
   document.onmousemove = resetTimer;
@@ -26,6 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.onclick = resetTimer;
 });
 
+// ✅ JSON 파일에서 문구 데이터 로드
 let quotes = {
   classicQuotes: [],
   liteQuotes: []
@@ -41,12 +43,13 @@ fetch('data/quotes.json')
     console.error("❌ JSON 불러오기 실패:", error);
   });
 
-// 셔플 리스트 모드별 따로 관리
+// ✅ 랜덤 중복 없는 문구 뽑기 (셔플 방식, 모드별 따로 관리)
 let shuffledClassic = [];
 let indexClassic = 0;
 let shuffledLite = [];
 let indexLite = 0;
 
+// ✅ 셔플 함수 (리스트 무작위 섞기)
 function shuffleArray(array) {
   let copy = [...array];
   for (let i = copy.length - 1; i > 0; i--) {
@@ -56,6 +59,7 @@ function shuffleArray(array) {
   return copy;
 }
 
+// ✅ 모드별 셔플된 문구 하나씩 뽑기
 function getUniqueQuote(list, mode) {
   if (mode === 'classic') {
     if (shuffledClassic.length === 0 || indexClassic >= shuffledClassic.length) {
@@ -77,13 +81,14 @@ function getUniqueQuote(list, mode) {
   }
 }
 
+// ✅ 타이핑 효과 (한 글자씩 출력)
 function typeWriterEffect(element, text, i = 0, buttonId = null) {
   if (i === 0 && buttonId) {
     document.getElementById(buttonId).disabled = true;
   }
   if (i < text.length) {
     element.textContent += text.charAt(i);
-    setTimeout(() => typeWriterEffect(element, text, i + 1, buttonId), 200);
+    setTimeout(() => typeWriterEffect(element, text, i + 1, buttonId), 100);
   } else {
     if (buttonId) {
       document.getElementById(buttonId).disabled = false;
@@ -91,6 +96,7 @@ function typeWriterEffect(element, text, i = 0, buttonId = null) {
   }
 }
 
+// ✅ 클래식 모드 진입시 실행
 function enterClassicMode() {
   const mainScreen = document.getElementById("main-screen");
   if (mainScreen) mainScreen.style.display = "none";
@@ -119,6 +125,7 @@ function enterClassicMode() {
   }, 1000);
 }
 
+// ✅ 클래식 모드에서 또 다른 문구 뽑기
 function showAnotherClassicQuote() {
   const quoteArea = document.getElementById("quote-area-classic");
   const quote = getUniqueQuote(quotes.classicQuotes, 'classic');
@@ -126,6 +133,7 @@ function showAnotherClassicQuote() {
   typeWriterEffect(quoteArea, quote, 0, "classic-more-btn");
 }
 
+// ✅ 라이트 모드 진입시 실행
 function enterLiteMode() {
   const mainScreen = document.getElementById("main-screen");
   if (mainScreen) mainScreen.style.display = "none";
@@ -154,6 +162,7 @@ function enterLiteMode() {
   }, 1000);
 }
 
+// ✅ 라이트 모드에서 또 다른 문구 뽑기
 function showAnotherLiteQuote() {
   const quoteArea = document.getElementById("quote-area-lite");
   const quote = getUniqueQuote(quotes.liteQuotes, 'lite');
@@ -161,6 +170,7 @@ function showAnotherLiteQuote() {
   typeWriterEffect(quoteArea, quote, 0, "lite-more-btn");
 }
 
+// ✅ 메인 화면으로 돌아가기
 function backToMain() {
   const classic = document.getElementById("classic-screen");
   const lite = document.getElementById("lite-screen");
@@ -180,6 +190,7 @@ function backToMain() {
   if (quoteArea) quoteArea.innerText = "";
 }
 
+// ✅ 사운드 재생 토글 (목탁 사운드)
 let audioPlaying = false;
 let audio = new Audio('sounds/temple-sound.mp3');
 
@@ -198,11 +209,13 @@ function playSound() {
   }
 }
 
+// ✅ 고양이 이스터에그: 닌자캣 클릭 → 라이트 모드 이동
 const ninjaCat = document.getElementById('ninja-cat');
 ninjaCat.addEventListener('click', () => {
   enterLiteMode();
 });
 
+// ✅ 닌자캣 이동 애니메이션
 function teleportNinjaCat() {
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
