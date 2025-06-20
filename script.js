@@ -9,9 +9,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const isSuspiciousSource = isDirect || badReferrers.some(b => ref.includes(b));
   const isNotMobile = !/Mobi|Android/i.test(ua);
 
-  //if (isSuspiciousSource || isNotMobile) {
-   // window.location.href = "no-access.html";
- // }
+  if (isSuspiciousSource || isNotMobile) {
+    window.location.href = "no-access.html";
+  }
 
   let timeout;
   function resetTimer() {
