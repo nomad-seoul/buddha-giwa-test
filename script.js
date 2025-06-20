@@ -15,6 +15,21 @@ document.addEventListener("DOMContentLoaded", () => {
   if (isSuspiciousSource || isNotMobile) {
     window.location.href = "no-access.html";
   }
+  // 1분 타이머 테스트용
+  let timeout;
+
+  function resetTimer() {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      window.location.href = "no-access.html";
+    }, 1 * 60 * 1000); // 1분 = 60000ms
+  }
+
+  window.onload = resetTimer;
+  document.onmousemove = resetTimer;
+  document.onkeypress = resetTimer;
+  document.onscroll = resetTimer;
+  document.onclick = resetTimer;
 });
 // ✅ 최근 명언 모드별 따로 저장
 let recentQuotesClassic = [];
