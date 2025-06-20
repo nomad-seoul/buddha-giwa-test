@@ -1,11 +1,7 @@
-
 document.addEventListener("DOMContentLoaded", () => {
   const rawRef = document.referrer || "";
   const ref = rawRef.toLowerCase();
   const ua = navigator.userAgent;
-
-  console.log("Referrer:", ref);
-  console.log("UserAgent:", ua);
 
   const isDirect = ref === "";
   const badReferrers = ["kakao", "naver", "instagram", "facebook", "t.co", "twitter"];
@@ -15,16 +11,14 @@ document.addEventListener("DOMContentLoaded", () => {
   if (isSuspiciousSource || isNotMobile) {
     window.location.href = "no-access.html";
   }
-   // === 30분 타이머 ===
-  let timeout;
 
+  let timeout;
   function resetTimer() {
     clearTimeout(timeout);
     timeout = setTimeout(() => {
       window.location.href = "no-access.html";
     }, 30 * 60 * 1000); // 30분 = 1800000ms
   }
-
   window.onload = resetTimer;
   document.onmousemove = resetTimer;
   document.onkeypress = resetTimer;
@@ -32,15 +26,11 @@ document.addEventListener("DOMContentLoaded", () => {
   document.onclick = resetTimer;
 });
 
-// ✅ 최근 명언 모드별 따로 저장
-let recentQuotesClassic = [];
-let recentQuotesLite = [];
 let quotes = {
   classicQuotes: [],
   liteQuotes: []
 };
 
-// ✅ JSON 불러오기
 fetch('data/quotes.json')
   .then(response => response.json())
   .then(data => {
@@ -51,9 +41,29 @@ fetch('data/quotes.json')
     console.error("❌ JSON 불러오기 실패:", error);
   });
 
-// ✅ 문구 랜덤 뽑기 함수
+// 중복 없는 랜덤 출력 (셔플 방식)
+let shuffledList = [];
+let currentIndex = 0;
 
-// ✅ 타이핑 효과
+function shuffleArray(array) {
+  let copy = [...array];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
+function getUniqueQuote(list) {
+  if (shuffledList.length === 0 || currentIndex >= shuffledList.length) {
+    shuffledList = shuffleArray(list);
+    currentIndex = 0;
+  }
+  const quote = shuffledList[currentIndex];
+  currentIndex++;
+  return quote;
+}
+
 function typeWriterEffect(element, text, i = 0, buttonId = null) {
   if (i === 0 && buttonId) {
     document.getElementById(buttonId).disabled = true;
@@ -69,7 +79,6 @@ function typeWriterEffect(element, text, i = 0, buttonId = null) {
   }
 }
 
-// ✅ 진심 위로 모드 전환
 function enterClassicMode() {
   const mainScreen = document.getElementById("main-screen");
   if (mainScreen) mainScreen.style.display = "none";
@@ -97,14 +106,14 @@ function enterClassicMode() {
 
     const quoteArea = document.getElementById("quote-area-classic");
     quoteArea.innerText = "";
-    const quote = getUniqueQuote(quotes.classicQuotes, recentQuotesClassic);
+    const quote = getUniqueQuote(quotes.classicQuotes);
     typeWriterEffect(quoteArea, quote);
   }, 1000);
 }
 
 function showAnotherClassicQuote() {
   const quoteArea = document.getElementById("quote-area-classic");
-  const quote = getUniqueQuote(quotes.classicQuotes, recentQuotesClassic);
+  const quote = getUniqueQuote(quotes.classicQuotes);
   quoteArea.innerText = "";
   typeWriterEffect(quoteArea, quote, 0, "classic-more-btn");
 }
@@ -136,19 +145,18 @@ function enterLiteMode() {
 
     const quoteArea = document.getElementById("quote-area-lite");
     quoteArea.textContent = "";
-    const quote = getUniqueQuote(quotes.liteQuotes, recentQuotesLite);
+    const quote = getUniqueQuote(quotes.liteQuotes);
     typeWriterEffect(quoteArea, quote);
   }, 1000);
 }
 
 function showAnotherLiteQuote() {
   const quoteArea = document.getElementById("quote-area-lite");
-  const quote = getUniqueQuote(quotes.liteQuotes, recentQuotesLite);
+  const quote = getUniqueQuote(quotes.liteQuotes);
   quoteArea.textContent = "";
   typeWriterEffect(quoteArea, quote, 0, "lite-more-btn");
 }
 
-// ✅ 돌아가기 버튼 기능 (공통)
 function backToMain() {
   const classic = document.getElementById("classic-screen");
   const lite = document.getElementById("lite-screen");
@@ -190,7 +198,6 @@ function playSound() {
   }
 }
 
-// 고양이 순간이동
 const ninjaCat = document.getElementById('ninja-cat');
 ninjaCat.addEventListener('click', () => {
   enterLiteMode();
@@ -199,18 +206,14 @@ ninjaCat.addEventListener('click', () => {
 function teleportNinjaCat() {
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
-
   const randomX = Math.random() * (screenWidth - 100);
   const randomY = Math.random() * (screenHeight - 100);
-
   ninjaCat.style.left = `${randomX}px`;
   ninjaCat.style.top = `${randomY}px`;
   ninjaCat.style.opacity = 1;
-
   setTimeout(() => {
     ninjaCat.style.opacity = 0;
   }, 3000);
 }
 
 setInterval(teleportNinjaCat, 5000);
-
