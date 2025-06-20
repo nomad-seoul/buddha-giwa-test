@@ -52,23 +52,6 @@ fetch('data/quotes.json')
   });
 
 // ✅ 문구 랜덤 뽑기 함수
-function getUniqueQuote(list, recentList) {
-  let quote = "";
-  let attempts = 0;
-
-  do {
-    const i = Math.floor(Math.random() * list.length);
-    quote = list[i];
-    attempts++;
-  } while (recentList.includes(quote) && attempts < 10);
-
-  recentList.push(quote);
-  if (recentList.length > 5) {
-    recentList.shift();
-  }
-
-  return quote;
-}
 
 // ✅ 타이핑 효과
 function typeWriterEffect(element, text, i = 0, buttonId = null) {
