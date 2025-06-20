@@ -78,7 +78,7 @@ function typeWriterEffect(element, text, i = 0, buttonId = null) {
 
   if (i < text.length) {
     element.textContent += text.charAt(i);
-    setTimeout(() => typeWriterEffect(element, text, i + 1, buttonId), 100);
+    setTimeout(() => typeWriterEffect(element, text, i + 1, buttonId), 200);
   } else {
     if (buttonId) {
       document.getElementById(buttonId).disabled = false;
