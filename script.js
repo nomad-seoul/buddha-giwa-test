@@ -9,9 +9,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const isSuspiciousSource = isDirect || badReferrers.some(b => ref.includes(b));
   const isNotMobile = !/Mobi|Android/i.test(ua);
 
-  //if (isSuspiciousSource || isNotMobile) {
-  //  window.location.href = "no-access.html";
-  //}
+  if (isSuspiciousSource || isNotMobile) {
+    window.location.href = "no-access.html";
+  }
 
   let timeout;
   function resetTimer() {
@@ -81,7 +81,7 @@ function getUniqueQuote(list, mode) {
   }
 }
 
-// ✅ 타이핑 효과 (한 글자씩 출력)
+//  타이핑 효과 (한 글자씩 출력)
 function typeWriterEffect(element, text, i = 0, buttonId = null) {
   if (i === 0 && buttonId) {
     document.getElementById(buttonId).disabled = true;
@@ -96,7 +96,7 @@ function typeWriterEffect(element, text, i = 0, buttonId = null) {
   }
 }
 
-// ✅ 클래식 모드 진입시 실행
+//  클래식 모드 진입시 실행
 function enterClassicMode() {
   const mainScreen = document.getElementById("main-screen");
   if (mainScreen) mainScreen.style.display = "none";
@@ -125,7 +125,7 @@ function enterClassicMode() {
   }, 1000);
 }
 
-// ✅ 클래식 모드에서 또 다른 문구 뽑기
+//  클래식 모드에서 또 다른 문구 뽑기
 function showAnotherClassicQuote() {
   const quoteArea = document.getElementById("quote-area-classic");
   const quote = getUniqueQuote(quotes.classicQuotes, 'classic');
@@ -133,7 +133,7 @@ function showAnotherClassicQuote() {
   typeWriterEffect(quoteArea, quote, 0, "classic-more-btn");
 }
 
-// ✅ 라이트 모드 진입시 실행
+//  라이트 모드 진입시 실행
 function enterLiteMode() {
   const mainScreen = document.getElementById("main-screen");
   if (mainScreen) mainScreen.style.display = "none";
@@ -162,7 +162,7 @@ function enterLiteMode() {
   }, 1000);
 }
 
-// ✅ 라이트 모드에서 또 다른 문구 뽑기
+// 라이트 모드에서 또 다른 문구 뽑기
 function showAnotherLiteQuote() {
   const quoteArea = document.getElementById("quote-area-lite");
   const quote = getUniqueQuote(quotes.liteQuotes, 'lite');
