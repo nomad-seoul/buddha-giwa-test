@@ -44,7 +44,6 @@ fetch('data/quotes.json')
   });
 
 // ✅ 랜덤 중복 없는 문구 뽑기 (셔플 방식, 모드별 따로 관리)
-let shuffledClassic = [];
 let indexClassic = 0;
 let shuffledLite = [];
 let indexLite = 0;
@@ -72,7 +71,7 @@ function getUniqueQuote(list, mode) {
   } 
   if (mode === 'lite') {
     if (shuffledLite.length === 0 || indexLite >= shuffledLite.length) {
-      shuffledLite = shuffleArray(list);
+      shuffledLite = (list);
       indexLite = 0;
     }
     const quote = shuffledLite[indexLite];
