@@ -71,7 +71,7 @@ function getUniqueQuote(list, mode) {
   } 
   if (mode === 'lite') {
     if (shuffledLite.length === 0 || indexLite >= shuffledLite.length) {
-      shuffledLite = (list);
+      shuffledLite = shuffleArray(list);
       indexLite = 0;
     }
     const quote = shuffledLite[indexLite];
