@@ -44,6 +44,7 @@ fetch('data/quotes.json')
   });
 
 // ✅ 랜덤 중복 없는 문구 뽑기 (셔플 방식, 모드별 따로 관리)
+let shuffledClassic = [];
 let indexClassic = 0;
 let shuffledLite = [];
 let indexLite = 0;
