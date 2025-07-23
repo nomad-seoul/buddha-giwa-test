@@ -1,4 +1,4 @@
-// ✅ 초기 접속 필터링 및 30분 타이머 (접근 제한 기능)
+// ✅ 초기 접속 필터링 및 5분 타이머 (접근 제한 기능)
 document.addEventListener("DOMContentLoaded", () => {
   const rawRef = document.referrer || "";
   const ref = rawRef.toLowerCase();
@@ -14,11 +14,27 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   let timeout;
+
+  // ✅ 탭을 떠났다가 1분 이상 지나 복귀하면 차단
+let lastActiveTime = performance.now();
+
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden') {
+    lastActiveTime = performance.now();
+  } else if (document.visibilityState === 'visible') {
+    const now = performance.now();
+    const inactiveDuration = now - lastActiveTime;
+    if (inactiveDuration > 1 * 60 * 1000) {
+      window.location.href = "no-access.html";
+    }
+  }
+});
+
   function resetTimer() {
     clearTimeout(timeout);
     timeout = setTimeout(() => {
       window.location.href = "no-access.html";
-    }, 30 * 60 * 1000); // 30분 무반응시 접근 제한
+    }, 3 * 60 * 1000); // 3분 무반응시 접근 제한
   }
   window.onload = resetTimer;
   document.onmousemove = resetTimer;
