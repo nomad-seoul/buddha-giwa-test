@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const isNotMobile = !/Mobi|Android/i.test(ua);
 
   if (isSuspiciousSource || isNotMobile) {
-    window.location.href = "no-access.html";
+    window.location.replace = "no-access.html";
   }
 
   let timeout;
@@ -25,7 +25,7 @@ document.addEventListener('visibilitychange', () => {
     const now = performance.now();
     const inactiveDuration = now - lastActiveTime;
     if (inactiveDuration > 1 * 60 * 1000) {
-      window.location.href = "no-access.html";
+      window.location.replace = "no-access.html";
     }
   }
 });
@@ -33,7 +33,7 @@ document.addEventListener('visibilitychange', () => {
   function resetTimer() {
     clearTimeout(timeout);
     timeout = setTimeout(() => {
-      window.location.href = "no-access.html";
+      window.location.replace = "no-access.html";
     }, 3 * 60 * 1000); // 3분 무반응시 접근 제한
   }
   window.onload = resetTimer;

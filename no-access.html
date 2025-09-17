@@ -92,6 +92,13 @@
     </div>
   </div>
 </body>
+<script>
+  // 뒤로가기를 눌러도 항상 현재(no-access.html)에 머무르게 함
+  history.replaceState(null, "", location.href);
+  window.addEventListener("popstate", () => {
+    history.replaceState(null, "", location.href);
+  });
+</script>
 </html>
 
 
