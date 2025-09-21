@@ -9,40 +9,53 @@ document.addEventListener("DOMContentLoaded", () => {
   const isSuspiciousSource = isDirect || badReferrers.some(b => ref.includes(b));
   const isNotMobile = !/Mobi|Android|iPhone|iPad/i.test(ua);
 
-
   if (isSuspiciousSource || isNotMobile) {
-    window.location.href = "no-access.html";
+    window.location.replace("no-access.html");
   }
 
-  let timeout;
+  // ✅ 탭 이탈 후 1분 넘으면 차단
+  let lastHiddenTime = null;
 
-  // ✅ 탭을 떠났다가 1분 이상 지나 복귀하면 차단
-let lastActiveTime = performance.now();
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "hidden") {
+      lastHiddenTime = Date.now();
+    } else if (document.visibilityState === "visible") {
+      if (lastHiddenTime) {
+        const now = Date.now();
+        const duration = now - lastHiddenTime;
+        if (duration > 60 * 1000) {
+          window.location.replace("no-access.html");
+        }
+      }
+    }
+  });
 
-document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'hidden') {
-    lastActiveTime = performance.now();
-  } else if (document.visibilityState === 'visible') {
-    const now = performance.now();
-    const inactiveDuration = now - lastActiveTime;
-    if (inactiveDuration > 1 * 60 * 1000) {
-      window.location.href = "no-access.html";
+  // ✅ 무반응 3분 차단
+  let lastActivityTime = Date.now();
+
+  function updateActivityTime() {
+    lastActivityTime = Date.now();
+  }
+
+  // 사용자 활동 감지
+  ["mousemove", "keydown", "scroll", "click", "touchstart", "touchmove"].forEach(evt => {
+    document.addEventListener(evt, updateActivityTime, { passive: true });
+  });
+
+  function checkInactivityLoop() {
+    const now = Date.now();
+    const idleTime = now - lastActivityTime;
+    if (idleTime > 3 * 60 * 1000) {
+      window.location.replace("no-access.html");
+    } else {
+      requestAnimationFrame(checkInactivityLoop);
     }
   }
+
+  requestAnimationFrame(checkInactivityLoop);
 });
 
-  function resetTimer() {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => {
-      window.location.href = "no-access.html";
-    }, 3 * 60 * 1000); // 3분 무반응시 접근 제한
-  }
-  window.onload = resetTimer;
-  document.onmousemove = resetTimer;
-  document.onkeypress = resetTimer;
-  document.onscroll = resetTimer;
-  document.onclick = resetTimer;
-});
+
 
 // ✅ JSON 파일에서 문구 데이터 로드
 let quotes = {
@@ -227,10 +240,15 @@ function playSound() {
 }
 
 // ✅ 고양이 이스터에그: 닌자캣 클릭 → 라이트 모드 이동
-const ninjaCat = document.getElementById('ninja-cat');
-ninjaCat.addEventListener('click', () => {
-  enterLiteMode();
+document.addEventListener("DOMContentLoaded", () => {
+  const ninjaCat = document.getElementById('ninja-cat');
+  if (ninjaCat) {
+    ninjaCat.addEventListener('click', () => {
+      enterLiteMode();
+    });
+  }
 });
+
 
 // ✅ 닌자캣 이동 애니메이션
 function teleportNinjaCat() {
@@ -247,3 +265,4 @@ function teleportNinjaCat() {
 }
 
 setInterval(teleportNinjaCat, 5000);
+
