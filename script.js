@@ -7,7 +7,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const isDirect = ref === "";
   const badReferrers = ["kakao", "naver", "instagram", "facebook", "t.co", "twitter"];
   const isSuspiciousSource = isDirect || badReferrers.some(b => ref.includes(b));
-  const isNotMobile = !/Mobi|Android/i.test(ua);
+  const isNotMobile = !/Mobi|Android|iPhone|iPad/i.test(ua);
+
 
   if (isSuspiciousSource || isNotMobile) {
     window.location.href = "no-access.html";
