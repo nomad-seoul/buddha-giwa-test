@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=D2Coding&display=swap" rel="stylesheet">
-
+</head>
 <body>
   
   <!-- 오른쪽 상단 음악 재생 버튼 -->
@@ -87,6 +87,15 @@
 </div>
   <script src="script.js?v=20250422"></script>
   <div id="cat-popup" class="custom-popup">야옹 업보가 정화 됩니다</div>
+<script>
+  // 뒤로가기 등으로 재진입시 JS 다시 실행되게끔 강제 새로고침
+  window.addEventListener("pageshow", function (event) {
+    if (event.persisted || (window.performance && performance.navigation.type === 2)) {
+      // 뒤로가기 또는 bfcache에서 복원된 경우
+      location.reload();
+    }
+  });
+</script>
 
 </body>
 </html>
