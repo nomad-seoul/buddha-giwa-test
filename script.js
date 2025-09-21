@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.replace("no-access.html");
   }
 
-  // ✅ 탭 이탈 후 1분 넘으면 차단
+  // ✅ 탭 이탈 후 30초 넘으면 차단
   let lastHiddenTime = null;
 
   document.addEventListener("visibilitychange", () => {
@@ -23,14 +23,14 @@ document.addEventListener("DOMContentLoaded", () => {
       if (lastHiddenTime) {
         const now = Date.now();
         const duration = now - lastHiddenTime;
-        if (duration > 60 * 1000) {
+        if (duration > 30 * 1000) {
           window.location.replace("no-access.html");
         }
       }
     }
   });
 
-  // ✅ 무반응 3분 차단
+  // ✅ 무반응 1분 차단
   let lastActivityTime = Date.now();
 
   function updateActivityTime() {
@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function checkInactivityLoop() {
     const now = Date.now();
     const idleTime = now - lastActivityTime;
-    if (idleTime > 3 * 60 * 1000) {
+    if (idleTime > 1 * 60 * 1000) {
       window.location.replace("no-access.html");
     } else {
       requestAnimationFrame(checkInactivityLoop);
