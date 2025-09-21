@@ -240,15 +240,10 @@ function playSound() {
 }
 
 // ✅ 고양이 이스터에그: 닌자캣 클릭 → 라이트 모드 이동
-document.addEventListener("DOMContentLoaded", () => {
-  const ninjaCat = document.getElementById('ninja-cat');
-  if (ninjaCat) {
-    ninjaCat.addEventListener('click', () => {
-      enterLiteMode();
-    });
-  }
+const ninjaCat = document.getElementById('ninja-cat');
+ninjaCat.addEventListener('click', () => {
+  enterLiteMode();
 });
-
 
 // ✅ 닌자캣 이동 애니메이션
 function teleportNinjaCat() {
