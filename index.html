@@ -88,7 +88,7 @@
   <script src="script.js?v=20250422"></script>
   <div id="cat-popup" class="custom-popup">야옹 업보가 정화 됩니다</div>
 <script>
-  // ✅ 뒤로가기 방지: pushState 루프
+  // ✅ 뒤로가기 차단 (pushState 루프)
   (function blockBack() {
     history.pushState(null, "", location.href);
     window.addEventListener("popstate", function () {
@@ -97,12 +97,22 @@
     });
   })();
 
-  // ✅ bfcache (iOS Safari 뒤로가기 캐시) 차단
+  // ✅ iOS Safari bfcache(뒤로가기 캐시) 차단
   window.addEventListener("pageshow", function (event) {
     if (event.persisted) {
       window.location.replace("no-access.html");
     }
   });
+
+  // ✅ 사용자 입력 발생 시 추가 검사 (iOS에서 보조 안전장치)
+  ["touchstart", "click"].forEach(evt => {
+    window.addEventListener(evt, () => {
+      if (document.referrer && document.referrer.includes("no-access")) {
+        window.location.replace("no-access.html");
+      }
+    }, { passive: true });
+  });
 </script>
+
 </body>
 </html>
