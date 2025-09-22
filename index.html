@@ -92,7 +92,6 @@
   (function blockBack() {
     history.pushState(null, "", location.href);
     window.addEventListener("popstate", function () {
-      history.pushState(null, "", location.href);
       window.location.replace("no-access.html"); // 강제 차단 페이지 이동
     });
   })();

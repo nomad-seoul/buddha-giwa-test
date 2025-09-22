@@ -93,10 +93,11 @@
   </div>
 </body>
 <script>
-  history.pushState(null, null, location.href);
-  window.onpopstate = function () {
-    history.go(1);
-  };
+history.pushState(null, "", location.href);
+window.addEventListener("popstate", function () {
+  window.location.replace("no-access.html");
+});
+
 </script>
 
 </html>
