@@ -11,6 +11,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (isSuspiciousSource || isNotMobile) {
     window.location.replace("no-access.html");
+    // ✅ 뒤로가기 시에도 접근 제한 다시 검사
+if (performance && performance.navigation.type === 2) {
+  window.location.replace("no-access.html");
+}
+
   }
 
   // ✅ 탭 이탈 후 30초 넘으면 차단
