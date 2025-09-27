@@ -18,22 +18,13 @@ if (performance && performance.navigation.type === 2) {
 
   }
 
-  // ✅ 탭 이탈 후 30초 넘으면 차단
-  let lastHiddenTime = null;
+  // ✅ 탭 이탈 시 즉시 차단
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden") {
+    window.location.replace("no-access.html");
+  }
+});
 
-  document.addEventListener("visibilitychange", () => {
-    if (document.visibilityState === "hidden") {
-      lastHiddenTime = Date.now();
-    } else if (document.visibilityState === "visible") {
-      if (lastHiddenTime) {
-        const now = Date.now();
-        const duration = now - lastHiddenTime;
-        if (duration > 30 * 1000) {
-          window.location.replace("no-access.html");
-        }
-      }
-    }
-  });
 
   // ✅ 무반응 1분 차단
   let lastActivityTime = Date.now();
