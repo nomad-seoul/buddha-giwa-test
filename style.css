@@ -360,3 +360,13 @@ body, html {
 #sound-btn {
   animation: float 3s ease-in-out infinite;
 }
+/* ❄️ 눈 캔वास */
+#snow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none; /* UI 버튼 클릭 방해 X */
+  z-index: 99999; /* 최상단 */
+}

@@ -9,7 +9,8 @@
   <link href="https://fonts.googleapis.com/css2?family=D2Coding&display=swap" rel="stylesheet">
 </head>
 <body>
-  
+  <canvas id="snow"></canvas>
+
   <!-- 오른쪽 상단 음악 재생 버튼 -->
 <img src="images/moktak.png" id="sound-btn" alt="목탁 버튼" onclick="playSound()" 
      style="position: fixed; top: 20px; right: 20px; width: 50px; z-index: 1000;">
@@ -87,6 +88,65 @@
 </div>
   <script src="script.js?v=20250422"></script>
   <div id="cat-popup" class="custom-popup">야옹 업보가 정화 됩니다</div>
+  <script>
+    
+/* ❄️ 픽셀 눈 내리는 효과 */
+const canvasSnow = document.getElementById("snow");
+const ctxSnow = canvasSnow.getContext("2d");
+
+function resizeSnow() {
+  canvasSnow.width = window.innerWidth;
+  canvasSnow.height = window.innerHeight;
+}
+resizeSnow();
+window.addEventListener("resize", resizeSnow);
+
+const snowflakes = [];
+
+function Snowflake() {
+  this.x = Math.random() * canvasSnow.width;
+  this.y = Math.random() * canvasSnow.height;
+  this.speedY = Math.random() * 1 + 0.5;
+  this.speedX = (Math.random() - 0.5) * 0.4;
+  this.size = Math.floor(Math.random() * 3) + 2; 
+}
+
+Snowflake.prototype.update = function () {
+  this.y += this.speedY;
+  this.x += this.speedX;
+
+  if (this.y > canvasSnow.height) {
+    this.y = -10;
+    this.x = Math.random() * canvasSnow.width;
+  }
+};
+
+Snowflake.prototype.draw = function () {
+  ctxSnow.fillStyle = "#ffffff";
+  ctxSnow.fillRect(this.x, this.y, this.size, this.size);
+};
+
+function initSnow() {
+  for (let i = 0; i < 200; i++) {
+    snowflakes.push(new Snowflake());
+  }
+}
+
+function animateSnow() {
+  ctxSnow.clearRect(0, 0, canvasSnow.width, canvasSnow.height);
+
+  snowflakes.forEach(flake => {
+    flake.update();
+    flake.draw();
+  });
+
+  requestAnimationFrame(animateSnow);
+}
+
+initSnow();
+animateSnow();
+</script>
+
 <script>
   // ✅ 뒤로가기 차단 (pushState 루프)
   (function blockBack() {
