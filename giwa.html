@@ -36,12 +36,21 @@ async function submitWish() {
   });
 
   if (res.ok) {
-    document.getElementById("result").innerText = "✨ 소원이 기와에 올라갔습니다!";
+    // 성공 메시지 + 사용자가 쓴 글 표시
+    document.getElementById("result").innerHTML = `
+      ✨ 소원이 기와에 올라갔습니다!<br><br>
+      <strong>내가 방금 적은 소원:</strong><br>
+      <div style="padding:12px; background:#fff7d9; border-radius:8px; margin-top:6px;">
+        ${name ? `<b>${name}</b> — ` : ""}
+        ${message}
+      </div>
+    `;
   } else {
     document.getElementById("result").innerText = "⚠️ 서버 오류! 잠시 후 다시 시도해주세요.";
   }
 }
 </script>
+
 
 </body>
 </html>
