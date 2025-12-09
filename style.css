@@ -1,0 +1,400 @@
+/* 🌄 전체 배경 */
+.full-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: -1;
+  transition: opacity 1s ease;
+}
+
+/* 💡 메인 구조 */
+body, html {
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+}
+
+.main-wrapper {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.center-content {
+  width: 100%;
+  max-width: 800px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 🙏 부처님 */
+.buddha-img {
+  width: 200px;
+  min-height: 160px;
+  display: block;
+  opacity: 0;
+  animation: zoomFade 2s ease-out forwards, float 3s ease-in-out infinite;
+  animation-delay: 0.5s, 2.5s;
+  margin-bottom: 20px;
+  margin-left: 27px; /* 오른쪽으로 밀고 싶을 때 */
+}
+
+/* 👘 진심/웃음 부처 공용 */
+.classic-buddha {
+  width: 230px;
+  display: block;
+  margin: 0 auto;
+  opacity: 0;
+  animation: zoomFade 2s ease-out forwards, float 3s ease-in-out infinite;
+  animation-delay: 0.5s, 2.5s;
+}
+
+/* 🔘 버튼 */
+.button-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.button-group-horizontal {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+  justify-content: center;
+}
+.pixel-button {
+  background-color: #a8a8a8;
+  background-image:
+    radial-gradient(rgba(0, 0, 0, 0.1) 2%, transparent 3%),
+    radial-gradient(rgba(255, 255, 255, 0.05) 1%, transparent 4%),
+    linear-gradient(45deg, rgba(80, 80, 80, 0.05) 25%, transparent 25%);
+  background-size: 6px 6px, 8px 8px, 100% 100%;
+  border: 3px solid #2d2d2d;
+  border-radius: 4px;
+  font-family: 'D2Coding', monospace;
+  font-size: 6px;
+  color: #222;
+  padding: 14px 22px;
+  box-shadow:
+    inset -1px -1px 2px #5e5e5e,
+    inset 1px 1px 2px #e1e1e1,
+    3px 3px 0 #1e1e1e;
+  cursor: pointer;
+  text-shadow: 1px 1px 0 #eeeeee;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.pixel-button:hover {
+  background-color: #8f8f8f;
+  box-shadow:
+    inset -1px -1px 2px #444,
+    inset 1px 1px 2px #ccc,
+    2px 2px 0 #000;
+  transform: translateY(-1px) scale(1.02);
+}
+
+/* 📜 명언 텍스트 */
+.quote-text {
+  font-size: 1.1rem;
+  color: #333;
+  line-height: 1.6;
+  max-width: 80%;
+  margin: 0 auto;
+  word-break: keep-all;
+  white-space: pre-line;
+}
+
+/* 💬 명언 위치 조정 */
+.wooden-box .quote-text {
+  display: inline-block;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  max-width: 100%;
+  color: #3b2b16;
+  font-weight: bold;
+  text-shadow: 1px 1px 0 rgba(255,255,255,0.4);
+  font-family: 'Noto Sans KR', sans-serif;
+  transform: translateY(-2px);
+  letter-spacing: -0.5px; /* ← 요거 추가하면 글자들 좀 가까워짐 */
+
+  }
+  
+
+
+/* 🌲 기본 나무 느낌 박스 */
+.wooden-box {
+  background-color: #e2c28b;
+  border: 4px solid #7c5a36;
+  padding: 10px 5px;
+  border-radius: 0;
+  width: min(600px, 90%);
+  margin: 0 auto;
+  max-width: 70%;
+  box-shadow: inset 0 0 0 4px #d1a866,
+              0 0 0 2px #5a3e2b,
+              4px 4px 0 #3e2a1f;
+  background-image: linear-gradient(
+    90deg,
+    rgba(124, 90, 54, 0.2) 1px,
+    transparent 1px
+  );
+  background-size: 16px 100%;
+  image-rendering: pixelated;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 15px;
+}
+
+/* ✨ 애니메이션 */
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes zoomFade {
+  0% {
+    opacity: 0;
+    transform: scale(0.1) translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* 🎯 각 화면 (classic / lite) */
+#classic-screen,
+#lite-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: none;
+  width: 100vw;
+  height: 100vh;
+  z-index: 20;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 😎 이모지 스타일 */
+.emoji {
+  font-family: system-ui, sans-serif;
+  margin-right: 6px;
+  font-size: 2.3em;
+  vertical-align: middle;
+}
+
+/* 🎨 도트 스타일 텍스트 */
+.pixel-style .quote-text {
+  font-size: 12px;
+  color: #1e0f00;
+  text-shadow: 1px 1px 0 #f4e1c1;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.pixel-style {
+  border: 4px solid #000;
+  box-shadow:
+    0 0 4px #fffbe6,
+    0 0 8px #7c5a36,
+    8px 8px 0 #444;
+  font-family: "Noto Sans KR", sans-serif;
+}
+/* 목탁 진심위로 버튼 */
+.moktak-button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+  display: inline-block;
+  transition: transform 0.2s ease;
+  margin-left: 72px; /* 오른쪽으로 밀고 싶을 때 */
+}
+
+.moktak-button img {
+  width: 100px;
+  height: auto;
+  image-rendering: pixelated;
+  transition: transform 0.2s ease;
+}
+
+.moktak-button:hover img {
+  transform: scale(1.1) rotate(-2deg);
+}
+
+.moktak-button:active img {
+  transform: scale(0.95);
+}
+
+
+.moktak-wrapper {
+  display: flex;
+  flex-direction: row; /* ❗ 가로 정렬 핵심 */
+  align-items: center; /* ❗ 수직 가운데 정렬 */
+  gap: 10px; /* ❗ 둘 사이 여백 (원하는 만큼 조절) */
+}
+
+
+
+.moktak-button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  animation: float 3s ease-in-out infinite;
+
+}
+
+.moktak-img {
+  width: 64px;
+  height: auto;
+  image-rendering: pixelated;
+}
+/* 진심위로 말풍선*/ 
+.balloon-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-left: -50px; /* ❗ 이게 핵심! 말풍선을 목탁 쪽으로 당김 */
+  margin-top: -70px; /* 살짝 위로 올리고 싶다면 추가 */
+  animation: float 3s ease-in-out infinite;
+
+}
+
+
+.balloon-img {
+  width: 100px; /* 말풍선 이미지 크기 */
+}
+
+.balloon-text {
+  position: absolute;
+  top: 42%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 11px;
+  color: black;
+  text-align: center;
+  pointer-events: none;
+}
+
+ /*고양이 웃음 위로 버튼 */
+.cat-button-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  opacity: 0; /* 기본은 안 보이게 */
+  pointer-events: auto; /* 클릭 안 되게 */
+  z-index: 999;
+}
+
+
+.cat-button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.cat-button img {
+  width: 100px;
+  height: auto;
+  image-rendering: pixelated;
+}
+
+.cat-button:hover {
+  transform: scale(1.05);
+}
+#ninja-cat {
+  position: fixed;
+  width: 80px;
+  height: auto;
+  z-index: 9999;
+  cursor: pointer;
+  transition: opacity 0.5s ease;
+}
+.custom-popup {
+  position: fixed;
+  bottom: 90%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 248, 230, 0.95);
+  padding: 20px 30px;
+  border-radius: 12px;
+  font-family: 'D2Coding', monospace;
+  font-size: 14px;
+  color: #333;
+  z-index: 9999;
+  box-shadow: 0 0 12px rgba(0,0,0,0.2);
+  display: none;
+}
+#sound-btn {
+  animation: float 3s ease-in-out infinite;
+}
+/* ❄️ 눈 캔 */
+#snow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none; /* UI 버튼 클릭 방해 X */
+  z-index: 99999; /* 최상단 */
+}
+/* 강아지 버튼 */
+.dog-button-container {
+  position: fixed;
+  bottom: 39%;
+  right: 9%;
+  opacity: 1;
+  z-index: 999;
+}
+
+.dog-button img {
+  width: 48px;
+  height: auto;
+  image-rendering: pixelated;
+  transition: transform 0.2s ease;
+}
+
+.dog-button:hover img {
+  transform: scale(1.05);
+}
+.dog-button, .dog-button-container {
+  background: transparent !important;
+}
+.dog-button {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+}

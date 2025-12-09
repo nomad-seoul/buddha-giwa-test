@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>소원 기와</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="giwa-bg">
+
+  <div class="giwa-container">
+    <h2>🧡 소원 기와 올리기</h2>
+
+    <input id="wishName" class="giwa-input" placeholder="이름(선택)">
+    <textarea id="wishMessage" class="giwa-textarea" placeholder="소원을 적어주세요"></textarea>
+
+    <button class="giwa-button" onclick="submitWish()">소원 올리기</button>
+
+    <p id="result" class="giwa-result"></p>
+  </div>
+
+<script>
+async function submitWish() {
+  const name = document.getElementById("wishName").value;
+  const message = document.getElementById("wishMessage").value;
+
+  if (!message.trim()) {
+    alert("소원을 적어주세요 🙏");
+    return;
+  }
+
+  const res = await fetch("https://super-mud-4457.ygo30361.workers.dev/create-wish", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name, message })
+  });
+
+  if (res.ok) {
+    document.getElementById("result").innerText = "✨ 소원이 기와에 올라갔습니다!";
+  } else {
+    document.getElementById("result").innerText = "⚠️ 서버 오류! 잠시 후 다시 시도해주세요.";
+  }
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "name": "buddha-keyring",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://junwooyoun.github.io/buddha-keyring",
+  "scripts": {
+    "deploy": "gh-pages -d ."
+  },
+  "devDependencies": {
+    "gh-pages": "^6.3.0"
+  }
+}

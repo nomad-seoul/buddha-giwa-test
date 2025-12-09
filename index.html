@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>디지털 사찰</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=D2Coding&display=swap" rel="stylesheet">
+</head>
+<body>
+  <canvas id="snow"></canvas>
+
+  <!-- 오른쪽 상단 음악 재생 버튼 -->
+<img src="images/moktak.png" id="sound-btn" alt="목탁 버튼" onclick="playSound()" 
+     style="position: fixed; top: 20px; right: 20px; width: 50px; z-index: 1000;">
+
+  <!-- 🌄 배경 -->
+  <img id="main-bg" src="images/pixel-temple-bg.png" alt="배경" class="full-bg"/>
+
+  <!-- 🧘 메인 콘텐츠 --> 
+  <div class="main-wrapper">
+    <div class="center-content" id="main-screen">
+      <img src="images/pixel-buddha.png" alt="부처님" class="buddha-img" id="main-buddha" />
+      <div class="button-group">
+        <div class="moktak-wrapper">
+          <button class="moktak-button" onclick="enterClassicMode()">
+            <img src="images/yeomju.png" alt="목탁" class="moktak-img" />
+          </button>
+          <div class="balloon-container">
+            <img src="images/balloon.png" alt="말풍선" class="balloon-img" />
+            <span class="balloon-text">디지털<br>가르침</span>
+          </div>
+        </div>
+      </div>
+      <div id="ninja-cat" class="cat-button-container">
+        <button class="cat-button">
+          <img src="images/cat.png" alt="고양이">
+        </button>
+      </div>
+      <div id="giwa-dog" class="dog-button-container">
+  <button class="dog-button" onclick="openGiwaBulsa()">
+    <img src="images/dog.png" alt="강아지" style="background: transparent !important;">
+
+  </button>
+</div>
+
+      </div>
+      <div id="quote-area" class="quote-text"></div>
+    </div>
+  </div>
+
+<!-- 🧘 진심위로 모드 화면 -->
+<div id="classic-screen" class="main-wrapper" style="display: none;">
+  <div class="center-content">
+  
+    <img src="images/classic-buddha.png" alt="클래식 부처님" class="classic-buddha" />
+  <div class="wooden-box">
+    <div id="quote-area-classic" class="quote-text"></div>
+  </div>
+  <div class="button-group-horizontal">
+    <button id="classic-more-btn" class="pixel-button" onclick="showAnotherClassicQuote()">
+  <span class="emoji"> 한 말씀 더 </span>
+</button>
+
+  
+    <button class="pixel-button" onclick="backToMain()">
+      <span class="emoji">뒤로가기</span> 
+    </button>
+  </div>
+ </div>
+
+</div>
+
+  
+      <!-- 😄 웃음 위로 모드 화면 -->
+      <div id="lite-screen" class="main-wrapper" style="display: none;">
+        <div class="center-content">
+          <img src="images/pixel-buddha-laugh.png" alt=" 부처님" class="classic-buddha" />
+          
+          <div class="wooden-box">
+            <div id="quote-area-lite" class="quote-text"></div>
+          </div>
+      
+          <div class="button-group-horizontal">
+     <button id="lite-more-btn" class="pixel-button" onclick="showAnotherLiteQuote()">
+  <span class="emoji">한 말씀 더</span>
+</button>
+
+            <button class="pixel-button" onclick="backToMain()">
+              <span class="emoji">뒤로가기</span> 
+            </button>
+  </div>
+  
+</div>
+  <script src="script.js?v=20250422"></script>
+  <div id="cat-popup" class="custom-popup">야옹 업보가 정화 됩니다</div>
+  <script>
+    
+/* ❄️ 픽셀 눈 내리는 효과 */
+const canvasSnow = document.getElementById("snow");
+const ctxSnow = canvasSnow.getContext("2d");
+
+function resizeSnow() {
+  canvasSnow.width = window.innerWidth;
+  canvasSnow.height = window.innerHeight;
+}
+resizeSnow();
+window.addEventListener("resize", resizeSnow);
+
+const snowflakes = [];
+
+function Snowflake() {
+  this.x = Math.random() * canvasSnow.width;
+  this.y = Math.random() * canvasSnow.height;
+  this.speedY = Math.random() * 1 + 0.5;
+  this.speedX = (Math.random() - 0.5) * 0.4;
+  this.size = Math.floor(Math.random() * 3) + 2; 
+}
+
+Snowflake.prototype.update = function () {
+  this.y += this.speedY;
+  this.x += this.speedX;
+
+  if (this.y > canvasSnow.height) {
+    this.y = -10;
+    this.x = Math.random() * canvasSnow.width;
+  }
+};
+
+Snowflake.prototype.draw = function () {
+  ctxSnow.fillStyle = "#ffffff";
+  ctxSnow.fillRect(this.x, this.y, this.size, this.size);
+};
+
+function initSnow() {
+  for (let i = 0; i < 200; i++) {
+    snowflakes.push(new Snowflake());
+  }
+}
+
+function animateSnow() {
+  ctxSnow.clearRect(0, 0, canvasSnow.width, canvasSnow.height);
+
+  snowflakes.forEach(flake => {
+    flake.update();
+    flake.draw();
+  });
+
+  requestAnimationFrame(animateSnow);
+}
+
+initSnow();
+animateSnow();
+</script>
+
+<script>
+  // ✅ 뒤로가기 차단 (pushState 루프)
+  (function blockBack() {
+    history.pushState(null, "", location.href);
+    window.addEventListener("popstate", function () {
+      window.location.replace("no-access.html"); // 강제 차단 페이지 이동
+    });
+  })();
+
+  // ✅ iOS Safari bfcache(뒤로가기 캐시) 차단
+  window.addEventListener("pageshow", function (event) {
+    if (event.persisted) {
+      window.location.replace("no-access.html");
+    }
+  });
+
+  // ✅ 사용자 입력 발생 시 추가 검사 (iOS에서 보조 안전장치)
+  ["touchstart", "click"].forEach(evt => {
+    window.addEventListener(evt, () => {
+      if (document.referrer && document.referrer.includes("no-access")) {
+        window.location.replace("no-access.html");
+      }
+    }, { passive: true });
+  });
+</script>
+
+</body>
+</html>
