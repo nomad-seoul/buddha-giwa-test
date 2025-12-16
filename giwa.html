@@ -7,194 +7,170 @@
 
   <style>
   body {
-  margin: 0;
-  font-family: sans-serif;
-  text-align: center;
+    margin: 0;
+    font-family: sans-serif;
+    text-align: center;
+    background-image: url("images/giwa-temple.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    opacity: 0; /* 🔥 페이드인 준비 */
+  }
 
-  /* 🔥 픽셀 사찰 이미지 배경 적용 */
-  background-image: url("images/giwa-temple.png");
-  background-size: cover;        /* 화면 꽉 채움 */
-  background-repeat: no-repeat;  
-  background-position: center;   /* 중앙 정렬 */
-  background-attachment: fixed;  /* 스크롤해도 고정 */
-}
+  .main-wrapper {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-    .main-wrapper {
-      width: 100%;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+  .center-content {
+    max-width: 340px;
+  }
 
-    .center-content {
-      max-width: 340px;
-    }
+  /* 버튼 스타일 */
+  .pixel-button {
+    background-color: #a8a8a8;
+    background-image:
+      radial-gradient(rgba(0, 0, 0, 0.1) 2%, transparent 3%),
+      radial-gradient(rgba(255, 255, 255, 0.05) 1%, transparent 4%),
+      linear-gradient(45deg, rgba(80, 80, 80, 0.05) 25%, transparent 25%);
+    background-size: 6px 6px, 8px 8px, 100% 100%;
+    border: 3px solid #2d2d2d;
+    border-radius: 4px;
+    font-family: 'D2Coding', monospace;
+    font-size: 12px;
+    color: #222;
+    padding: 14px 22px;
+    box-shadow:
+      inset -1px -1px 2px #5e5e5e,
+      inset 1px 1px 2px #e1e1e1,
+      3px 3px 0 #1e1e1e;
+    cursor: pointer;
+    transition: transform 0.15s ease;
+  }
 
-    /* ------------------------------------------ */
-    /* 🔘 디지털 사찰 pixel-button 스타일 */
-    /* ------------------------------------------ */
-    .pixel-button {
-      background-color: #a8a8a8;
-      background-image:
-        radial-gradient(rgba(0, 0, 0, 0.1) 2%, transparent 3%),
-        radial-gradient(rgba(255, 255, 255, 0.05) 1%, transparent 4%),
-        linear-gradient(45deg, rgba(80, 80, 80, 0.05) 25%, transparent 25%);
-      background-size: 6px 6px, 8px 8px, 100% 100%;
-      border: 3px solid #2d2d2d;
-      border-radius: 4px;
-      font-family: 'D2Coding', monospace;
-      font-size: 12px;
-      color: #222;
-      padding: 14px 22px;
-      box-shadow:
-        inset -1px -1px 2px #5e5e5e,
-        inset 1px 1px 2px #e1e1e1,
-        3px 3px 0 #1e1e1e;
-      cursor: pointer;
-      text-shadow: 1px 1px 0 #eeeeee;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
-    }
+  .pixel-button:hover {
+    transform: translateY(-1px) scale(1.02);
+  }
 
-    .pixel-button:hover {
-      background-color: #8f8f8f;
-      box-shadow:
-        inset -1px -1px 2px #444,
-        inset 1px 1px 2px #ccc,
-        2px 2px 0 #000;
-      transform: translateY(-1px) scale(1.02);
-    }
+  .button-group-horizontal {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 18px;
+  }
 
-    .button-group-horizontal {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 18px;
-    }
+  /* 기와 입력창 */
+  .giwa-input-wrapper {
+    width: 300px;
+    height: 320px;
+    margin: 0 auto;
+    position: relative;
+    background-image: url("images/giwa.png");
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+  }
 
+  .giwa-input-wrapper textarea {
+    position: absolute;
+    top: 32%;
+    left: 23%;
+    width: 63%;
+    height: 45%;
+    background: transparent;
+    border: none;
+    resize: none;
+    outline: none;
+    overflow-y: auto;
+    color: white;
+    font-family: "Gowun Batang", serif;
+    font-size: 18px;
+    line-height: 1.7;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.85);
+    transform: perspective(600px) rotateX(10deg);
+  }
 
-    /* ------------------------------------------ */
-    /* 🔥 giwa.png를 입력창으로 사용하는 코드 (최종본) */
-    /* ------------------------------------------ */
-    .giwa-input-wrapper {
-      width: 300px;
-      height: 320px;
-      margin: 0 auto;
-      position: relative;
+  .giwa-input-wrapper textarea::placeholder {
+    color: rgba(255,255,255,0.45);
+  }
 
-      background-image: url("images/giwa.png");
-      background-size: cover;
-      background-position: center;
+  /* 기와 날아가는 애니메이션 */
+  .giwa-fly-up {
+    transition: transform 0.7s ease-out, opacity 0.7s, filter 0.7s;
+    transform: translateY(-160%) scale(1.1);
+    opacity: 0;
+    filter: brightness(2);
+  }
 
-      overflow: hidden; /* 🔥 기와 밖 글자 절대 안보임 */
-    }
+  /* 화면 흐림 효과 */
+  .screen-effect {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    backdrop-filter: blur(0px) brightness(1);
+    opacity: 0;
+    transition: backdrop-filter 1s ease, opacity 1s ease;
+  }
 
-    .giwa-input-wrapper textarea {
-      position: absolute;
-    touch-action: none; 
-
-      /* 기와 안에서만 나오도록 위치 조정 */
-      top: 32%;
-      left: 23%;
-      width: 63%;
-      height: 45%;
-
-      background: transparent;
-      border: none;
-      resize: none;
-      outline: none;
-
-      padding: 0;
-      margin: 0;
-
-      overflow-y: auto;  /* 🔥 넘치면 스크롤 */
-      overflow-x: hidden;
-
-      color: white;
-      font-family: "Gowun Batang", serif;
-      font-size: 18px;
-      line-height: 1.7;
-      letter-spacing: 1px;
-
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.85);
-
-      /* 기와 곡면 느낌 */
-      transform: perspective(600px) rotateX(10deg);
-    }
-
-    .giwa-input-wrapper textarea::placeholder {
-      color: rgba(255,255,255,0.45);
-    }
-
-    #result {
-      margin-top: 12px;
-      font-size: 15px;
-      font-weight: 500;
-    }
-    /* 🔥 스와이프 시 기와가 날아가는 애니메이션 */
-
-/* 기와가 하늘로 올라가며 빛나는 효과 */
-.giwa-fly-up {
-  transition: transform 0.7s ease-out, opacity 0.7s, filter 0.7s;
-  transform: translateY(-160%) scale(1.1);
-  opacity: 0;
-  filter: brightness(2);
-}
-/* 🎇 전체 화면으로 퍼지는 금빛 파티클 */
-.particle {
-  position: fixed; /* 화면 기준 */
-  width: 30px;
-  height: 14px;
-  background: radial-gradient(circle, #ffe9a8, #ffb300, #e07d00);
-  border-radius: 50%;
-  pointer-events: none;
-  opacity: 0.9;
-  animation: particle-explode 10s ease-out forwards;
-}
-
-@keyframes particle-explode {
-  0% {
-    transform: translate(0, 0) scale(1);
+  .screen-effect.active {
+    backdrop-filter: blur(10px) brightness(1.5);
     opacity: 1;
   }
-  100% {
-    transform: translate(
-      calc(-150px + 300px * var(--rx)),
-      calc(-150px + 300px * var(--ry))
-    ) scale(0.3);
+
+  /* 중앙 메시지 */
+  .wish-done-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: "Gowun Batang", serif;
+    font-size: 22px;
+    color: white;
+    text-shadow: 0 0 10px rgba(255,255,255,0.9);
     opacity: 0;
+    transition: opacity 0.8s ease;
+    pointer-events: none;
   }
-}
 
-
-
+  .wish-done-message.show {
+    opacity: 1;
+  }
   </style>
 </head>
 
 <body>
 
+<!-- 화면 효과 -->
+<div class="screen-effect" id="screenEffect"></div>
+
+<!-- 소원 메시지 -->
+<div class="wish-done-message" id="wishDoneMsg">✨ 소원이 이루어졌습니다 ✨</div>
+
 <div class="main-wrapper">
   <div class="center-content">
 
-    <!-- 🔥 기와 이미지 입력창 -->
-<div class="giwa-input-wrapper" id="giwaBox">
-  <textarea id="wishMessage" placeholder="소원을 적고 기와를 힘껏 올려보세요!"></textarea>
-</div>
+    <!-- 기와 입력창 -->
+    <div class="giwa-input-wrapper" id="giwaBox">
+      <textarea id="wishMessage" placeholder="소원을 적고 기와를 힘껏 올려보세요!"></textarea>
+    </div>
 
-
-    <!-- 버튼 -->
+    <!-- 뒤로가기 버튼 -->
     <div class="button-group-horizontal">
       <button class="pixel-button" onclick="backToMain()">뒤로가기</button>
     </div>
 
-    <p id="result"></p>
-
   </div>
 </div>
 
-<!-- ----------------------------------------- -->
-<!-- 🔥 Firebase 연동 -->
-<!-- ----------------------------------------- -->
+<!-- Firebase & 기능 스크립트 -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
   import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
@@ -213,90 +189,93 @@
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
 
+  const giwa = document.getElementById("giwaBox");
+  const effect = document.getElementById("screenEffect");
+  const doneMsg = document.getElementById("wishDoneMsg");
+
+  let startY = 0;
+  let currentY = 0;
+  let swipeStarted = false;
+
   window.submitWish = async function () {
-    const message = document.getElementById("wishMessage").value;
-
-
-
-    await push(ref(db, "wishes"), {
-      name: "익명",
-      message,
-      time: Date.now()
-    });
-
-    document.getElementById("wishMessage").value = "";
-    document.getElementById("result").innerText = "✨ 소원이 기와에 올라갔습니다!";
+    const msg = document.getElementById("wishMessage").value.trim();
+    await push(ref(db, "wishes"), { name: "익명", message: msg, time: Date.now() });
   };
 
+  /* 스와이프 시작 */
+  giwa.addEventListener("touchstart", (e) => {
+    startY = e.touches[0].clientY;
+    swipeStarted = false;
+  });
+
+  /* 스와이프 중 */
+  giwa.addEventListener("touchmove", (e) => {
+    currentY = e.touches[0].clientY;
+    const delta = currentY - startY;
+    const msg = document.getElementById("wishMessage").value.trim();
+
+    if (!msg) return;
+    if (delta < -30) swipeStarted = true;
+
+    if (swipeStarted && delta < 0) {
+      e.preventDefault();
+      giwa.style.transform = `translateY(${delta}px)`;
+    }
+  });
+
+  /* 스와이프 종료 */
+  giwa.addEventListener("touchend", async () => {
+    const delta = currentY - startY;
+    const msg = document.getElementById("wishMessage").value.trim();
+
+    if (!msg) {
+      giwa.style.transition = "transform 0.3s";
+      giwa.style.transform = "translateY(0)";
+      setTimeout(() => (giwa.style.transition = ""), 300);
+      return;
+    }
+
+    if (delta < -80) {
+      giwa.classList.add("giwa-fly-up");
+      effect.classList.add("active");
+      doneMsg.classList.add("show");
+
+      await submitWish();
+
+      setTimeout(() => {
+        giwa.classList.remove("giwa-fly-up");
+        giwa.style.transform = "translateY(0)";
+        document.getElementById("wishMessage").value = "";
+      }, 700);
+
+      setTimeout(() => doneMsg.classList.remove("show"), 1500);
+      setTimeout(() => effect.classList.remove("active"), 1800);
+
+    } else {
+      giwa.style.transition = "transform 0.3s";
+      giwa.style.transform = "translateY(0)";
+      setTimeout(() => (giwa.style.transition = ""), 300);
+    }
+  });
+
+  /* 🔥 페이지 진입 페이드인 */
+  window.addEventListener("DOMContentLoaded", () => {
+    setTimeout(() => {
+      document.body.style.transition = "opacity 0.6s ease-out";
+      document.body.style.opacity = 1;
+    }, 50);
+  });
+
+  /* 🔥 뒤로가기 페이드아웃 */
   window.backToMain = function () {
-    window.location.href = "index.html";
+    document.body.style.transition = "opacity 0.5s ease-out";
+    document.body.style.opacity = 0;
+
+    setTimeout(() => {
+      window.location.href = "index.html";
+    }, 500);
   };
-let startY = 0;
-let currentY = 0;
-let isSwiping = false;
-let swipeStarted = false;
-
-const giwa = document.getElementById("giwaBox");
-
-// 터치 시작
-giwa.addEventListener("touchstart", (e) => {
-  startY = e.touches[0].clientY;
-  swipeStarted = false;
-});
-
-// 터치 이동
-giwa.addEventListener("touchmove", (e) => {
-  currentY = e.touches[0].clientY;
-  let delta = currentY - startY;
-
-  // 🔥 30px 이상 위로 움직이면 스와이프 시작
-  if (delta < -30) {
-    swipeStarted = true;
-  }
-
-  // 스와이프가 시작된 경우만 기와 이동
-  if (swipeStarted && delta < 0) {
-    e.preventDefault(); // 글쓰기/스크롤 방해하지 않음
-    giwa.style.transform = `translateY(${delta}px)`;
-  }
-});
-
-// 터치 종료
-giwa.addEventListener("touchend", async () => {
-  let distance = currentY - startY;
-if (distance < -80) {
-
-  giwa.classList.add("giwa-fly-up");
-
-  // 기와 중심 좌표 계산
-  const rect = giwa.getBoundingClientRect();
-
-  // 금빛 파티클 생성
-  for (let i = 0; i < 12; i++) {
-    const p = document.createElement("div");
-    p.className = "particle";
-
-    p.style.setProperty("--rx", Math.random());
-    p.style.setProperty("--ry", Math.random());
-
-    p.style.left = rect.left + rect.width / 2 + "px";
-    p.style.top = rect.top + rect.height / 2 + "px";
-
-    document.body.appendChild(p);
-
-    setTimeout(() => p.remove(), 700);
-  }
-
-  await submitWish();
-
-  setTimeout(() => {
-    giwa.classList.remove("giwa-fly-up");
-    giwa.style.transform = "translateY(0)";
-    document.getElementById("wishMessage").value = "";
-  }, 700);
-}
-
-});
 </script>
+
 </body>
 </html>
