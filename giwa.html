@@ -23,8 +23,9 @@
     margin: 0;
     font-family: sans-serif;
     text-align: center;
-    overflow-y: auto;
+    overflow-y: hidden;
     height: 100vh;
+    overscroll-behavior: none;
   }
 
   .main-wrapper {
@@ -85,6 +86,7 @@
     background-size: cover;
     background-position: center;
     overflow: hidden;
+    touch-action: none;
   }
 /* 기와 입력창 사이즈 조절 */
   .giwa-input-wrapper textarea {
@@ -205,10 +207,12 @@
     await push(ref(db, "wishes"), { name: "익명", message: msg, time: Date.now() });
   };
 
-  function backToMain() {
-    document.body.style.transition = "opacity 0.5s";
-    document.body.style.opacity = 0;
-    setTimeout(() => window.location.href = "index.html", 500);
+window.backToMain = function () {
+  document.body.style.transition = "opacity 0.5s";
+  document.body.style.opacity = 0;
+  setTimeout(() => {
+    window.location.href = "index.html";
+  }, 500);
   }
 
   let startY = 0;
