@@ -373,7 +373,7 @@ body, html {
 /* 강아지 버튼 */
 .dog-button-container {
   position: fixed;
-  bottom: 39%;
+  bottom: 30%;
   right: 9%;
   opacity: 1;
   z-index: 999;

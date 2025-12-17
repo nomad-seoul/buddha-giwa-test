@@ -185,8 +185,22 @@
 </div>
 
 <script type="module">
+
+  /* ✅ 사파리/안드로이드 스크롤 전역 차단 */
+  document.addEventListener(
+    "touchmove",
+    function (e) {
+      const target = e.target;
+      if (target.tagName === "TEXTAREA") return; // textarea는 예외
+      e.preventDefault();
+    },
+    { passive: false }
+  );
+
+
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
   import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
 
   const firebaseConfig = {
     apiKey: "AIzaSyBSwwbQ0VpQhjhnw8Gw3DuVoICDYA6Gqbo",
