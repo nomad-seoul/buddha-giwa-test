@@ -270,5 +270,5 @@ function openGiwaPage() {
   // 0.5초 후 기와 페이지로 이동
   setTimeout(() => {
     window.location.href = "giwa.html"; 
-  }, 500);
+  }, 300);
 }

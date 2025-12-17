@@ -79,7 +79,7 @@
   /* 기와 입력창 */
   .giwa-input-wrapper {
     width: 300px;
-    height: 320px;
+    height: 330px;
     margin: 0 auto;
     position: relative;
     background-image: url("images/giwa.png");
@@ -102,7 +102,7 @@
     overflow-y: auto;
     color: white;
     font-family: "Gowun Batang", serif;
-    font-size: 18px;
+    font-size: 21px;
     line-height: 1.7;
     letter-spacing: 1px;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.85);
@@ -168,18 +168,19 @@
 
 <!-- 화면 효과 -->
 <div class="screen-effect" id="screenEffect"></div>
-<div class="wish-done-message" id="wishDoneMsg">✨ 소원이 이루어졌습니다 ✨</div>
+<div class="wish-done-message" id="wishDoneMsg">✨ 소원성취 ✨</div>
 
 <div class="main-wrapper">
   <div class="center-content">
 
     <div class="giwa-input-wrapper" id="giwaBox">
-      <textarea id="wishMessage" placeholder="소원을 적고  기와를 힘껏  올려보세요!"></textarea>
+      <textarea id="wishMessage" placeholder="소원을적고 기와를 힘껏 올려주세요!"></textarea>
     </div>
 
     <div class="button-group-horizontal">
       <button class="pixel-button" onclick="backToMain()">뒤로가기</button>
     </div>
+
 
   </div>
 </div>
@@ -222,11 +223,11 @@
   };
 
 window.backToMain = function () {
-  document.body.style.transition = "opacity 0.5s";
+  document.body.style.transition = "opacity 0.3s";
   document.body.style.opacity = 0;
   setTimeout(() => {
     window.location.href = "index.html";
-  }, 500);
+  }, 300);
   }
 
   let startY = 0;
