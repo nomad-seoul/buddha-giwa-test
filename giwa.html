@@ -6,16 +6,25 @@
   <title>소원 기와</title>
 
   <style>
+  /* 🔥 전체 배경 고정용 wrapper */
+  .bg-fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("images/giwa-temple.png");
+    background-size: cover;
+    background-position: center;
+    z-index: -1;  /* 내용보다 뒤 */
+  }
+
   body {
     margin: 0;
     font-family: sans-serif;
     text-align: center;
-    background-image: url("images/giwa-temple.png");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-attachment: fixed;
-    opacity: 0; /* 🔥 페이드인 준비 */
+    overflow-y: auto;
+    height: 100vh;
   }
 
   .main-wrapper {
@@ -24,13 +33,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
   }
 
   .center-content {
     max-width: 340px;
   }
 
-  /* 버튼 스타일 */
+  /* 버튼 */
   .pixel-button {
     background-color: #a8a8a8;
     background-image:
@@ -49,6 +60,7 @@
       inset 1px 1px 2px #e1e1e1,
       3px 3px 0 #1e1e1e;
     cursor: pointer;
+    text-shadow: 1px 1px 0 #eeeeee;
     transition: transform 0.15s ease;
   }
 
@@ -74,12 +86,12 @@
     background-position: center;
     overflow: hidden;
   }
-
+/* 기와 입력창 사이즈 조절 */
   .giwa-input-wrapper textarea {
     position: absolute;
     top: 32%;
-    left: 23%;
-    width: 63%;
+    left: 25%;
+    width: 45%;
     height: 45%;
     background: transparent;
     border: none;
@@ -99,7 +111,7 @@
     color: rgba(255,255,255,0.45);
   }
 
-  /* 기와 날아가는 애니메이션 */
+  /* 기와 날아감 */
   .giwa-fly-up {
     transition: transform 0.7s ease-out, opacity 0.7s, filter 0.7s;
     transform: translateY(-160%) scale(1.1);
@@ -118,6 +130,7 @@
     backdrop-filter: blur(0px) brightness(1);
     opacity: 0;
     transition: backdrop-filter 1s ease, opacity 1s ease;
+    z-index: 50;
   }
 
   .screen-effect.active {
@@ -125,7 +138,6 @@
     opacity: 1;
   }
 
-  /* 중앙 메시지 */
   .wish-done-message {
     position: fixed;
     top: 50%;
@@ -138,6 +150,7 @@
     opacity: 0;
     transition: opacity 0.8s ease;
     pointer-events: none;
+    z-index: 99;
   }
 
   .wish-done-message.show {
@@ -148,21 +161,20 @@
 
 <body>
 
+<!-- ⭐ 스크롤해도 고정되는 배경 -->
+<div class="bg-fixed"></div>
+
 <!-- 화면 효과 -->
 <div class="screen-effect" id="screenEffect"></div>
-
-<!-- 소원 메시지 -->
 <div class="wish-done-message" id="wishDoneMsg">✨ 소원이 이루어졌습니다 ✨</div>
 
 <div class="main-wrapper">
   <div class="center-content">
 
-    <!-- 기와 입력창 -->
     <div class="giwa-input-wrapper" id="giwaBox">
-      <textarea id="wishMessage" placeholder="소원을 적고 기와를 힘껏 올려보세요!"></textarea>
+      <textarea id="wishMessage" placeholder="소원을 적고  기와를 힘껏  올려보세요!"></textarea>
     </div>
 
-    <!-- 뒤로가기 버튼 -->
     <div class="button-group-horizontal">
       <button class="pixel-button" onclick="backToMain()">뒤로가기</button>
     </div>
@@ -170,7 +182,6 @@
   </div>
 </div>
 
-<!-- Firebase & 기능 스크립트 -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
   import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
@@ -189,41 +200,42 @@
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
 
-  const giwa = document.getElementById("giwaBox");
-  const effect = document.getElementById("screenEffect");
-  const doneMsg = document.getElementById("wishDoneMsg");
-
-  let startY = 0;
-  let currentY = 0;
-  let swipeStarted = false;
-
   window.submitWish = async function () {
     const msg = document.getElementById("wishMessage").value.trim();
     await push(ref(db, "wishes"), { name: "익명", message: msg, time: Date.now() });
   };
 
-  /* 스와이프 시작 */
+  function backToMain() {
+    document.body.style.transition = "opacity 0.5s";
+    document.body.style.opacity = 0;
+    setTimeout(() => window.location.href = "index.html", 500);
+  }
+
+  let startY = 0;
+  let currentY = 0;
+  let swipeStarted = false;
+
+  const giwa = document.getElementById("giwaBox");
+  const effect = document.getElementById("screenEffect");
+  const doneMsg = document.getElementById("wishDoneMsg");
+
   giwa.addEventListener("touchstart", (e) => {
     startY = e.touches[0].clientY;
     swipeStarted = false;
   });
 
-  /* 스와이프 중 */
   giwa.addEventListener("touchmove", (e) => {
     currentY = e.touches[0].clientY;
     const delta = currentY - startY;
     const msg = document.getElementById("wishMessage").value.trim();
-
     if (!msg) return;
     if (delta < -30) swipeStarted = true;
-
     if (swipeStarted && delta < 0) {
       e.preventDefault();
       giwa.style.transform = `translateY(${delta}px)`;
     }
   });
 
-  /* 스와이프 종료 */
   giwa.addEventListener("touchend", async () => {
     const delta = currentY - startY;
     const msg = document.getElementById("wishMessage").value.trim();
@@ -231,7 +243,7 @@
     if (!msg) {
       giwa.style.transition = "transform 0.3s";
       giwa.style.transform = "translateY(0)";
-      setTimeout(() => (giwa.style.transition = ""), 300);
+      setTimeout(() => giwa.style.transition = "", 300);
       return;
     }
 
@@ -254,27 +266,9 @@
     } else {
       giwa.style.transition = "transform 0.3s";
       giwa.style.transform = "translateY(0)";
-      setTimeout(() => (giwa.style.transition = ""), 300);
+      setTimeout(() => giwa.style.transition = "", 300);
     }
   });
-
-  /* 🔥 페이지 진입 페이드인 */
-  window.addEventListener("DOMContentLoaded", () => {
-    setTimeout(() => {
-      document.body.style.transition = "opacity 0.6s ease-out";
-      document.body.style.opacity = 1;
-    }, 50);
-  });
-
-  /* 🔥 뒤로가기 페이드아웃 */
-  window.backToMain = function () {
-    document.body.style.transition = "opacity 0.5s ease-out";
-    document.body.style.opacity = 0;
-
-    setTimeout(() => {
-      window.location.href = "index.html";
-    }, 500);
-  };
 </script>
 
 </body>
